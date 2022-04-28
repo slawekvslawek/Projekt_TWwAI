@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Formularz</title>
+</head>
+<body>
+<div>
+	<b><h3> Warehouses </b></h3>
+    <label for="whatIsInside">Product:</label><br>
+    <input type="text" id="whatIsInside" name="What is inside" placeholder="What is inside" required><br>
+    <label for="business">Business:</label><br>
+    <input type="text" id="business" name="business" placeholder="Business" required><br>
+    <label for="isSomeOneInside">Is someone inside:</label><br>
+    <input type="text" id="isSomeOneInside" name="Is someone inside" placeholder="Is someone inside" required><br>
+	<label for="packingOrUnpacking">Packing or unpacking:</label><br>
+    <input type="text" id="packingOrUnpacking" name="Packing or unpacking" placeholder="Packing or unpacking" required><br>
+	<label for="openTime">Open Time:</label><br>
+    <input type="text" id="openTime" name="Open time" placeholder="Open time" required><br>
+	<label for="airQuality">Air quality:</label><br>
+    <input type="text" id="airQuality" name="Air quality" placeholder="Air quality" required><br>
+    <button class="send">Send</button>
+</div>
+
+<h3 class="info"></h3>
+
+<div>
+	<b><h3> Companies </b></h3>
+    <label for="name">Company:</label><br>
+    <input type="text" id="name" name="Company" placeholder="Company" required><br>
+    <label for="typeOfIndustrialPlant">Product:</label><br>
+    <input type="text" id="typeOfIndustrialPlant" name="Product" placeholder="Product" required><br>
+    <label for="numberOfWorkers">Number of workers:</label><br>
+    <input type="text" id="numberOfWorkers" name="Number of workers" placeholder="Number of workers" required><br>
+	<label for="openTimeC">Open time:</label><br>
+    <input type="text" id="openTimeC" name="Open time" placeholder="Open time" required><br>
+    <button class="send2">Send</button>
+</div>
+
+<h3 class="info2"></h3>
+
+<div>
+	<b><h3> Entrances </b></h3>
+    <label for="isQueue">Number of people in queue:</label><br>
+    <input type="number" id="isQueue" name="Number of people in queue" placeholder="Number of people in queue" required><br>
+    <label for="place">Position of entrance:</label><br>
+    <input type="text" id="place" name="Position of entrance" placeholder="Position of entrance" required><br>
+    <button class="send3">Send</button>
+</div>
+
+<h3 class="info3"></h3>
+
+</body>
+
+<script>
+
+    let whatIsInside = document.querySelector('#whatIsInside');
+    let business = document.querySelector('#business');
+    let isSomeOneInside = document.querySelector('#isSomeOneInside');
+    let packingOrUnpacking = document.querySelector('#packingOrUnpacking');
+    let openTime = document.querySelector('#openTime');
+    let airQuality = document.querySelector('#airQuality');
+    let info = document.querySelector('.info');
+    let send = document.querySelector('.send');
+	
+	let name = document.querySelector('#name');
+    let typeOfIndustrialPlant = document.querySelector('#typeOfIndustrialPlant');
+    let numberOfWorkers = document.querySelector('#numberOfWorkers');
+	let openTimeC = document.querySelector('#openTimeC');
+    let send2 = document.querySelector('.send2');
+	let info2 = document.querySelector('.info2');
+
+    let isQueue = document.querySelector('#isQueue');
+    let place = document.querySelector('#place');
+    let send3 = document.querySelector('.send3');
+	let info3 = document.querySelector('.info3');
+
+    clear();
+
+    send.addEventListener('click', action);
+	send2.addEventListener('click', action2);
+	send3.addEventListener('click', action3);
+
+    function clear() {
+        whatIsInside.value = null;
+        business.value = null;
+        isSomeOneInside.value = null;
+		packingOrUnpacking.value = null;
+		openTime.value = null;
+		airQuality.value = null;
+		name.value = null;
+		typeOfIndustrialPlant.value = null;
+		numberOfWorkers.value = null;
+		openTimeC.value = null;
+		isQueue.value = null;
+		place.value = null;
+    }
+
+    function action() {
+        let tempWhatIsInside = whatIsInside.value;
+        let tempBusiness = business.value;
+        let tempIsSomeOneInside = isSomeOneInside.value;
+        let tempPackingOrUnpacking = packingOrUnpacking.value;
+        let tempOpenTime = openTime.value;
+        let tempAirQuality = airQuality.value;
+
+        if (!tempWhatIsInside || !tempBusiness || !tempIsSomeOneInside || !tempPackingOrUnpacking || !tempOpenTime || !tempAirQuality) {
+            info.innerHTML = "Musisz uzupełnić wszystkie dane";
+        } else {
+            info.innerHTML = '';
+            let data = {
+                whatIsInside: tempWhatIsInside,
+                business: tempBusiness,
+                isSomeOneInside: tempIsSomeOneInside,
+                packingOrUnpacking: tempPackingOrUnpacking,
+                openTime: tempOpenTime,
+                airQuality: tempAirQuality,
+            }
+
+            fetch('http://localhost:3001/api/warehouses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+            clear();
+        }
+    }
+
+	function action2() {
+        let tempName = name.value;
+        let tempTypeOfIndustrialPlant = typeOfIndustrialPlant.value;
+        let tempNumberOfWorkers = numberOfWorkers.value;
+		let tempOpenTimeC = openTimeC.value;
+
+        if (!name || !typeOfIndustrialPlant || !numberOfWorkers || !openTimeC) {
+            info2.innerHTML = "Musisz uzupełnić wszystkie dane";
+        } else {
+            info2.innerHTML = '';
+            let data = {
+                name: tempName,
+                typeOfIndustrialPlant: tempTypeOfIndustrialPlant,
+                numberOfWorkers: tempNumberOfWorkers,
+				openTime: tempOpenTimeC,
+            }
+
+            fetch('http://localhost:3001/api/industrialplants', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+            clear();
+        }
+    }
+	
+	function action3() {
+        let tempIsQueue = isQueue.value;
+        let tempPlace = place.value;
+
+        if (!tempIsQueue || !tempPlace) {
+            info3.innerHTML = "Musisz uzupełnić wszystkie dane";
+        } else {
+            info3.innerHTML = '';
+            let data = {
+                isQueue: tempIsQueue,
+                place: tempPlace,
+            }
+
+            fetch('http://localhost:3001/api/entrance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+            clear();
+        }
+    }
+	
+</script>
+
+
+</html>
